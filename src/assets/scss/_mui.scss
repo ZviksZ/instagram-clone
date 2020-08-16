@@ -1,0 +1,21 @@
+.MuiButton-containedPrimary  {
+    background-color: #0095f6 !important;
+}
+.MuiButton-text {
+    font-weight: 700 !important;
+}
+
+.MuiTextField-root {
+    .MuiInputBase-root:hover,
+    .MuiInputBase-root.Mui-focused {
+        fieldset {
+            border-color: #0095f6 !important;
+        }
+    }
+
+
+}
+
+.MuiLink-underlineHover {
+    color: #0095f6 !important;
+}

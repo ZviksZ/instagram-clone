@@ -24,3 +24,11 @@ yarn-error.log*
 
 
 .idea
+
+firebase.json
+
+.firebaserc
+
+.firebase
+
+/src/services/firebase.js
