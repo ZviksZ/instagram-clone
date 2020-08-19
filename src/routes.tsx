@@ -1,7 +1,8 @@
 import React                     from 'react'
-import {Switch, Route, Redirect} from 'react-router-dom'
-import {Navbar}                  from "./components/general/Navbar/Navbar";
+import {Redirect, Route, Switch} from 'react-router-dom'
+import Navbar                    from "./components/general/Navbar/Navbar";
 import {AuthPage}                from "./components/pages/AuthPage/AuthPage";
+import {MainPage}                from "./components/pages/MainPage/MainPage";
 
 export const useRoutes = (isAuth: boolean) => {
    if (isAuth) {
@@ -11,8 +12,8 @@ export const useRoutes = (isAuth: boolean) => {
             <div className="content">
                <div className="header-margin"></div>
                <Switch>
-                  <Route path="/todo">
-                     {/*<MainPage/>*/}
+                  <Route path="/">
+                     <MainPage/>
                   </Route>
 
                   <Route path="/"

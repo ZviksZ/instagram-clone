@@ -14,21 +14,23 @@ const authReducer = (state = initialState, action: AuthActionTypes) => {
       case SET_USER_DATA:
          return {
             ...state,
-            ...action.payload
+            currentUser: action.payload
          }
       default:
          return state;
    }
 }
 
-export const setUserData = (currentUser: CurrentUser): SetUserDataAction => ({type: SET_USER_DATA, payload: currentUser})
+export const setUserData = (currentUser: CurrentUser | null): SetUserDataAction => ({type: SET_USER_DATA, payload: currentUser})
 
 
 export const login = (email: string, password: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
-   let userData;
+   let userData = null;
    try {
       await authAPI.signin(email, password);
-      let currentUser = auth().currentUser || null;
+      let currentUser = auth().currentUser;
+
+      console.log(currentUser)
 
       if (currentUser) {
          userData = {
@@ -44,7 +46,24 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
 
    }
 }
+export const register = (email: string, password: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
 
+   try {
+      await authAPI.signup(email, password);
 
+      //dispatch(setUserData(userData))
+   } catch (error) {
+      console.log(error)
+   }
+}
 
+export const logout = () => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+   try {
+      await authAPI.logout();
+
+      dispatch(setUserData(null))
+   } catch (error) {
+      console.log(error)
+   }
+}
 export default authReducer;

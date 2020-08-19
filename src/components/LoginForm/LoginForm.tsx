@@ -1,19 +1,20 @@
-import React, {useState}     from 'react';
-import Button                from '@material-ui/core/Button';
+import React, {useState}      from 'react';
+import Button                 from '@material-ui/core/Button';
 import TextField              from '@material-ui/core/TextField';
 import Link                   from '@material-ui/core/Link';
 import Grid                   from '@material-ui/core/Grid';
-import logo                   from '../../../../assets/images/logo.png';
-import {Controller, useForm}  from "react-hook-form";
-import s                      from './LoginForm.module.scss'
-import {loginSchema}          from '../../../../utils/validation-shemas';
-import {yupResolver}          from '@hookform/resolvers';
-import {connect, useDispatch} from "react-redux";
-import {AppState}             from "../../../../redux/store";
-import {AppActions}           from "../../../../types/common_types";
-import {ThunkDispatch}        from "redux-thunk";
-import {bindActionCreators}   from "redux";
-import {login}                from '../../../../redux/auth-reducer';
+import logo                   from '../../assets/images/logo.png';
+import {Controller, useForm} from "react-hook-form";
+import s                     from './LoginForm.module.scss'
+import {loginSchema}         from '../../utils/validation-shemas';
+import {yupResolver}         from '@hookform/resolvers';
+import {connect}             from "react-redux";
+import {AppState}            from "../../redux/store";
+import {AppActions}          from "../../types/common_types";
+import {ThunkDispatch}       from "redux-thunk";
+import {bindActionCreators}  from "redux";
+import {login, register}     from '../../redux/auth-reducer';
+import {db}                  from "../../service/firebase";
 
 type FormType = {
    email: string,
@@ -22,7 +23,7 @@ type FormType = {
 
 type Props = LinkStateProps & LinkDispatchProps;
 
-export const LoginForm: React.FC<Props> = ({login}) => {
+export const LoginForm: React.FC<Props> = ({login, register}) => {
 
    const [signIn, setSignIn] = useState(true)
    const {control, handleSubmit, setValue, errors} = useForm<FormType>({
@@ -36,10 +37,19 @@ export const LoginForm: React.FC<Props> = ({login}) => {
    }
 
    const onSubmit = (data: FormType) => {
-      if (signIn) {
-         login(data.email, data.password)
-      } else {
 
+      db.ref("users").on("value", snapshot => {
+
+         console.log(snapshot.val())
+         /*Object.keys(snapshot).map(element => element)*/
+         return snapshot.val()
+      });
+
+      if (signIn) {
+         login(data.email, data.password);
+
+      } else {
+         register(data.email, data.password);
       }
    };
 
@@ -102,6 +112,7 @@ interface LinkStateProps {
 
 interface LinkDispatchProps {
    login: typeof login
+   register: typeof register
 }
 
 let mapStateToProps = (state: AppState): LinkStateProps => {
@@ -112,7 +123,8 @@ let mapStateToProps = (state: AppState): LinkStateProps => {
 let mapDispatchToProps = (
    dispatch: ThunkDispatch<any, any, AppActions>
 ): LinkDispatchProps => ({
-   login: bindActionCreators(login, dispatch)
+   login: bindActionCreators(login, dispatch),
+   register: bindActionCreators(register, dispatch)
 });
 
 

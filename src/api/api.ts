@@ -1,5 +1,4 @@
 import {auth, db, storage} from "../service/firebase";
-import {element}           from "prop-types";
 
 
 
@@ -16,16 +15,9 @@ export const authAPI = {
 }
 
 export const postsAPI = {
-   getPosts() {
-      return db.ref("posts").on("value", snapshot => {
-         /*for (let key in snapshot.val()) {
-            console.log(key)
-            console.log(snapshot.val()[key])
-         }*/
-
-         /*Object.keys(snapshot).map(element => element)*/
-         return snapshot.val()
-      });
+   getPosts () {
+     //return db.ref("posts").on("value", snapshot => snapshot.val());
+     return db.ref("posts").once('value');
    },
    addPost(imgLink: string, imgCaption: string, userId: string) {
       return db.ref("posts").push({

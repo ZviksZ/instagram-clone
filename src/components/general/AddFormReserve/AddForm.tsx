@@ -9,30 +9,33 @@ export const AddForm = () => {
       /*validationSchema: addModalSchema*/
    });
 
+   useEffect(() => {
+      try {
+         let response = postsAPI.getPosts();
+
+         console.log(response)
+      } catch (error) {
+         console.log(error)
+      }
+   }, [])
+
    const onSubmit = async (data:any) => {
       const {imgLink, imgCaption, imgFile} = data;
-      const {uid, photoURL, displayName} = auth()?.currentUser || {};
-
-
 
 
       let file = imgFile[0];
-      if (file) {
-         let resp = storage.ref().child(`/users/${uid || ''}`).put(file);
+      let resp = storage.ref().child(`/users/${auth()?.currentUser?.uid || ''}`).put(file);
 
-
-         resp.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            auth()?.currentUser?.updateProfile({
-               photoURL: downloadURL,
-               displayName: null
-            }).then(function() {
-               console.log(auth()?.currentUser?.photoURL)
-            }).catch(function(error) {
-               // An error happened.
-            });
-         })
-      }
-
+      resp.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+         auth()?.currentUser?.updateProfile({
+            photoURL: downloadURL,
+            displayName: null
+         }).then(function() {
+            console.log(auth()?.currentUser?.photoURL)
+         }).catch(function(error) {
+            // An error happened.
+         });
+      })
 
 
 

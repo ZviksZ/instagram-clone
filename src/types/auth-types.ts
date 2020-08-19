@@ -13,7 +13,7 @@ export interface CurrentUser {
 
 export interface SetUserDataAction {
    type: typeof SET_USER_DATA;
-   payload: CurrentUser;
+   payload: CurrentUser | null;
 }
 
 export type AuthActionTypes = SetUserDataAction;
