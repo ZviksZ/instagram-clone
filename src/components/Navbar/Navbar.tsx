@@ -1,15 +1,15 @@
-import React                    from 'react';
-import s                        from './Navbar.module.scss'
-import logo                     from '../../../assets/images/logo.png';
-import {connect}                from "react-redux";
-import {logout}                 from '../../../redux/auth-reducer';
-import {AppState}               from "../../../redux/store";
-import {ThunkDispatch}          from "redux-thunk";
-import {AppActions}             from "../../../types/common_types";
-import {bindActionCreators}     from "redux";
-import {Avatar, Menu, MenuItem} from "@material-ui/core";
-import {CurrentUser}            from "../../../types/auth-types";
-import {auth} from '../../../service/firebase';
+import React                           from 'react';
+import s                               from './Navbar.module.scss'
+import logo                            from '../../assets/images/logo.png';
+import {connect}                       from "react-redux";
+import {logout}                        from '../../redux/auth-reducer';
+import {AppState}                      from "../../redux/store";
+import {ThunkDispatch}                 from "redux-thunk";
+import {AppActions}                    from "../../types/common_types";
+import {bindActionCreators}            from "redux";
+import {Avatar, Menu, MenuItem, Modal} from "@material-ui/core";
+import {CurrentUser}                   from "../../types/auth-types";
+import {AddForm}                       from "../AddForm/AddForm";
 
 
 type Props = LinkStateProps & LinkDispatchProps;
@@ -22,7 +22,7 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
       logout()
    }
 
-
+   const [open, setOpen] = React.useState(false);
    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
    const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
@@ -33,9 +33,18 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
       setAnchorEl(null);
    };
 
-   let photo = currentUser?.photoUrl || '';
+   const handleOpenModal = () => {
+      setOpen(true);
+      setAnchorEl(null);
+   };
 
-   console.log(photo)
+   const handleCloseModal = () => {
+      setOpen(false);
+      setAnchorEl(null);
+   };
+
+
+   let photo = currentUser?.photoUrl || '';
 
    return (
       <div className={s.navbar}>
@@ -54,10 +63,22 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                >
+                  <MenuItem onClick={handleOpenModal}>Add post</MenuItem>
                   <MenuItem onClick={handleClose}>Profile</MenuItem>
                   <MenuItem onClick={handleClose}>My account</MenuItem>
                   <MenuItem onClick={logoutHandler}>Logout</MenuItem>
                </Menu>
+
+
+               <Modal
+                  open={open}
+                  onClose={handleCloseModal}
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                  className={s.addPhotoModal}
+               >
+                  <AddForm setClose={handleCloseModal}/>
+               </Modal>
             </div>
 
          </div>

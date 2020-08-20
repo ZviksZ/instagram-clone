@@ -37,14 +37,6 @@ export const LoginForm: React.FC<Props> = ({login, register}) => {
    }
 
    const onSubmit = (data: FormType) => {
-
-      db.ref("users").on("value", snapshot => {
-
-         console.log(snapshot.val())
-         /*Object.keys(snapshot).map(element => element)*/
-         return snapshot.val()
-      });
-
       if (signIn) {
          login(data.email, data.password);
 

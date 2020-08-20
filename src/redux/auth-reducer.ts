@@ -1,9 +1,11 @@
 import {AuthActionTypes, SET_USER_DATA, SetUserDataAction, IAuthInitialState, CurrentUser} from "../types/auth-types";
-import {Dispatch}                                          from "redux";
-import {AppActions}                                        from "../types/common_types";
-import {AppState}                                          from "./store";
-import {authAPI}                                           from "../api/api";
-import {auth} from "../service/firebase";
+import {Dispatch}                                                                          from "redux";
+import {AppActions}                                                                        from "../types/common_types";
+import {AppState}                                                                          from "./store";
+import {auth}                                                                              from "../service/firebase";
+import {deleteCookie, getCookie, setCookie}                                                from "../utils/helpers";
+import {setMessage}                                                                        from "./app-reducer";
+import {IMessage}                                                                          from "../types/app-types";
 
 let initialState: IAuthInitialState = {
    currentUser: null
@@ -24,13 +26,24 @@ const authReducer = (state = initialState, action: AuthActionTypes) => {
 export const setUserData = (currentUser: CurrentUser | null): SetUserDataAction => ({type: SET_USER_DATA, payload: currentUser})
 
 
+export const getCookieUser = () => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+   try {
+      const cookies = getCookie('userData');
+      const data = JSON.parse(cookies + '');
+      if (data) {
+         dispatch(setUserData(data));
+      }
+   } catch (e) {
+
+      setMessage({type: 'error', text: 'Error. Try again, please.'})
+   }
+}
+
 export const login = (email: string, password: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
    let userData = null;
    try {
-      await authAPI.signin(email, password);
+      await auth().signInWithEmailAndPassword(email, password);
       let currentUser = auth().currentUser;
-
-      console.log(currentUser)
 
       if (currentUser) {
          userData = {
@@ -41,29 +54,32 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
          }
       }
 
-      dispatch(setUserData(userData))
-   } catch (error) {
 
+      setCookie('userData', JSON.stringify(userData), {expires: 2147483647});
+      dispatch(setUserData(userData));
+   } catch (error) {
+      setMessage({type: "error", text: "Error. Try again, please."})
    }
 }
 export const register = (email: string, password: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
 
    try {
-      await authAPI.signup(email, password);
+      await auth().createUserWithEmailAndPassword(email, password);
 
       //dispatch(setUserData(userData))
    } catch (error) {
-      console.log(error)
+      setMessage({type: 'error', text: 'Error. Try again, please.'})
    }
 }
 
 export const logout = () => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
    try {
-      await authAPI.logout();
+      await auth().signOut();
 
-      dispatch(setUserData(null))
+      deleteCookie('userData');
+      dispatch(setUserData(null));
    } catch (error) {
-      console.log(error)
+      setMessage({type: 'error', text: 'Error. Try again, please.'})
    }
 }
 export default authReducer;

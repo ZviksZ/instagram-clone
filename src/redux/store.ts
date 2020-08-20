@@ -3,8 +3,10 @@ import thunk, {ThunkMiddleware}                        from "redux-thunk";
 import {AppActions}                                    from "../types/common_types";
 import authReducer                                     from "./auth-reducer";
 import postsReducer                                    from "./posts-reducer";
+import appReducer                                      from "./app-reducer";
 
 let reducers = combineReducers({
+   app: appReducer,
    auth: authReducer,
    posts: postsReducer
 });

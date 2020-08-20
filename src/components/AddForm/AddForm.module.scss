@@ -1,0 +1,14 @@
+.form {
+    width: 100%;
+    max-width: 500px;
+    min-width: 320px;
+    background: #fff;
+    padding: 25px;
+    .fileInput {
+        display: none;
+    }
+    .fileButton {
+        display: block;
+        margin-bottom: 5px;
+    }
+}

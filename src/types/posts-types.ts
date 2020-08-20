@@ -16,6 +16,14 @@ export interface IPosts {
    userName: string
 }
 
+export interface PostData {
+   imgLink: string | null
+   imgCaption: string | null
+   userId: string | undefined
+   userPhoto: string | null | undefined
+   userName: string | null | undefined
+}
+
 export interface SetPostsAction {
    type: typeof SET_POSTS;
    payload: IPostObject;

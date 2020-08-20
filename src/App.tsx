@@ -1,16 +1,17 @@
-import React, {useEffect} from 'react';
-import {useRoutes}        from "./routes";
-import {useSelector}      from "react-redux";
-import {AppState}         from "./redux/store";
-import {authAPI}          from "./api/api";
+import React, {useEffect}         from 'react';
+import {useRoutes}                from "./routes";
+import {useDispatch, useSelector} from "react-redux";
+import {AppState}                 from "./redux/store";
+import {getCookieUser}            from "./redux/auth-reducer";
 
 const App = () => {
    const isAuth = useSelector((state: AppState) => state.auth.currentUser);
    const routes = useRoutes(isAuth ? true : false);
+   const dispatch = useDispatch();
 
    useEffect(() => {
-      authAPI.logout();
-   }, [])
+      dispatch(getCookieUser())
+   }, [dispatch])
 
    return (
       <>

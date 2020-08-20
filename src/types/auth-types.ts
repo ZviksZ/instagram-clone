@@ -3,8 +3,9 @@ export const SET_USER_DATA = 'instagram-clone/auth/SET_USER_DATA';
 export interface IAuthInitialState {
    currentUser: CurrentUser | null
 }
+export type CurrentUser = CurrentUserObj | null;
 
-export interface CurrentUser {
+export interface CurrentUserObj {
    name: string | null
    email: string | null
    photoUrl: string | null
