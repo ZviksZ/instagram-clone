@@ -3,7 +3,8 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import Navbar                    from "./components/Navbar/Navbar";
 import {AuthPage}                from "./components/pages/AuthPage/AuthPage";
 import {MainPage}                from "./components/pages/MainPage/MainPage";
-import {GlobalMessage}             from './components/GlobalMessage/GlobalMessage';
+import {GlobalMessage}           from './components/GlobalMessage/GlobalMessage';
+import {ProfilePage}             from "./components/pages/ProfilePage/ProfilePage";
 
 export const useRoutes = (isAuth: boolean) => {
    if (isAuth) {
@@ -14,10 +15,12 @@ export const useRoutes = (isAuth: boolean) => {
             <div className="content">
                <div className="header-margin"></div>
                <Switch>
-                  <Route path="/">
+                  <Route path="/" exact>
                      <MainPage/>
                   </Route>
-
+                  <Route path="/profile" exact>
+                     <ProfilePage/>
+                  </Route>
                   <Route path="/"
                          render={() => <Redirect from='/' to='/'/>}/>
                </Switch>

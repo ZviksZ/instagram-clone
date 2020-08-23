@@ -10,6 +10,7 @@ import {bindActionCreators}            from "redux";
 import {Avatar, Menu, MenuItem, Modal} from "@material-ui/core";
 import {CurrentUser}                   from "../../types/auth-types";
 import {AddForm}                       from "../AddForm/AddForm";
+import {NavLink}                       from "react-router-dom";
 
 
 type Props = LinkStateProps & LinkDispatchProps;
@@ -50,9 +51,9 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
       <div className={s.navbar}>
          <div className='container'>
             <div className={s.navbarWrapper}>
-               <a href="#" className={s.navbarLogo} rel="noreferrer noopener">
+               <NavLink to="/" className={s.navbarLogo}>
                   <img src={logo} alt=""/>
-               </a>
+               </NavLink>
 
                <Avatar alt="" src={photo}  aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}/>
 
@@ -63,10 +64,12 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                >
-                  <MenuItem onClick={handleOpenModal}>Add post</MenuItem>
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                  <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                  <MenuItem onClick={handleOpenModal}>Добавить пост</MenuItem>
+                  <MenuItem onClick={handleClose}>
+                     <NavLink to={'/profile'} className={s.link}>Профиль</NavLink>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>Мои фото</MenuItem>
+                  <MenuItem onClick={logoutHandler}>Выход</MenuItem>
                </Menu>
 
 

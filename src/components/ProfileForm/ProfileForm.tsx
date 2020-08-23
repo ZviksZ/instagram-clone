@@ -1,47 +1,42 @@
-import React, {useState} from 'react';
-import {Controller, useForm}          from "react-hook-form";
-import {useDispatch, useSelector}     from "react-redux";
-import {addPost}                      from '../../redux/posts-reducer';
-import {AppState}                     from "../../redux/store";
-import {Button}                       from "@material-ui/core";
-import TextField                      from "@material-ui/core/TextField/TextField";
-import s                              from "./AddForm.module.scss";
+import React, {useState}          from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {Controller, useForm}      from "react-hook-form";
+import TextField                  from "@material-ui/core/TextField/TextField";
+import {Avatar, Button}           from "@material-ui/core";
+import {updateProfile}            from "../../redux/auth-reducer";
+import s                          from './ProfileForm.module.scss'
+import {AppState}                 from "../../redux/store";
 
-type Props = {
-   setClose: () => void
-}
-
-export const AddForm:React.FC<Props> = React.forwardRef(({setClose}) => {
+export const ProfileForm = () => {
    const user = useSelector((state: AppState) => state.auth.currentUser);
    const dispatch = useDispatch();
-
    const [fileName, setFileName] = useState<string>('');
-   const {register, control, handleSubmit, getValues , errors} = useForm({
+   const {register, control, handleSubmit, getValues, errors} = useForm({
       /*validationSchema: addModalSchema*/
    });
 
    const onSubmit = async (data:any) => {
-      const {imgCaption, imgFile} = data;
+      const {userName, userPhoto} = data;
 
-      let file = imgFile[0];
+      let file = userPhoto[0]
 
-      dispatch(addPost(user, file, imgCaption));
-      setClose();
+      dispatch(updateProfile(userName, file));
    };
 
    const changeHandler = () => {
-      setFileName(getValues('imgFile')[0].name)
+      setFileName(getValues('userPhoto')[0].name)
    }
-
 
    return (
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
-         <h2>Добавить фото</h2>
+            {user && user?.photoUrl && <Avatar className={s.formAvatar} alt="" src={user.photoUrl}  aria-controls="simple-menu" aria-haspopup="true"/>}
+
+         <h2>Изменить профиль {user && user?.name && user.name}</h2>
          <Controller
             as={TextField}
-            name="imgCaption"
+            name="userName"
             control={control}
-            label="Введите подпись к фото"
+            label="Введите ник"
             fullWidth
             variant="outlined"
             margin="normal"
@@ -50,7 +45,7 @@ export const AddForm:React.FC<Props> = React.forwardRef(({setClose}) => {
          />
          <input
             accept="image/*"
-            name="imgFile"
+            name="userPhoto"
             ref={register}
             id="contained-button-file"
             multiple
@@ -72,9 +67,9 @@ export const AddForm:React.FC<Props> = React.forwardRef(({setClose}) => {
             variant="contained"
             color="primary"
          >
-           Отправить
+            Отправить
          </Button>
       </form>
    );
-})
+}
 

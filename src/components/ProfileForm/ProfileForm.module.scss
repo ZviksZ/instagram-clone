@@ -1,0 +1,20 @@
+.form {
+    width: 100%;
+    padding: 100px 0 50px;
+    input:visible, button {
+        width: 100%;
+    }
+    input[type="file"] {
+        display: none;
+    }
+    .fileButton {
+        display: inline-block;
+        margin: 12px 0 20px;
+    }
+    .formAvatar {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ebebeb;
+        margin: 15px auto;
+    }
+}

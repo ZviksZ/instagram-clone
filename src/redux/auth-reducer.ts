@@ -1,10 +1,10 @@
-import {AuthActionTypes, SET_USER_DATA, SetUserDataAction, IAuthInitialState, CurrentUser} from "../types/auth-types";
+import {AuthActionTypes, CurrentUser, IAuthInitialState, SET_USER_DATA, SetUserDataAction} from "../types/auth-types";
 import {Dispatch}                                                                          from "redux";
-import {AppActions}                         from "../types/common_types";
-import {AppState}                           from "./store";
-import {auth}                               from "../service/firebase";
-import {deleteCookie, getCookie, setCookie} from "../utils/helpers";
-import {setGlobalMessage}                         from "./app-reducer";
+import {AppActions}                                                                        from "../types/common_types";
+import {AppState}                                                                          from "./store";
+import {auth, db, storage}                                                                 from "../service/firebase";
+import {deleteCookie, getCookie, setCookie}                                                from "../utils/helpers";
+import {setMessageData}                                                                    from "./app-reducer";
 
 
 let initialState: IAuthInitialState = {
@@ -27,16 +27,12 @@ const authReducer = (state = initialState, action: AuthActionTypes) => {
 export const setUserData = (currentUser: CurrentUser | null): SetUserDataAction => ({type: SET_USER_DATA, payload: currentUser})
 
 
-
 export const getCookieUser = () => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
-   try {
-      const cookies = getCookie('userData');
-      const data = JSON.parse(cookies + '');
-      if (data) {
-         dispatch(setUserData(data));
-      }
-   } catch (e) {
-      setGlobalMessage({type: 'error', text: 'Ошибка. Попробуйте снова'})
+   const cookies = getCookie('userData');
+   const data = cookies && JSON.parse(cookies + '') || '';
+
+   if (data) {
+      dispatch(setUserData(data));
    }
 }
 
@@ -58,7 +54,7 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
       setCookie('userData', JSON.stringify(userData), {expires: 2147483647});
       dispatch(setUserData(userData));
    } catch (error) {
-      setGlobalMessage({type: "error", text: "Ошибка. Попробуйте снова"})
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
 }
 export const register = (email: string, password: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
@@ -66,7 +62,7 @@ export const register = (email: string, password: string) => async (dispatch: Di
    try {
       await auth().createUserWithEmailAndPassword(email, password);
    } catch (error) {
-      setGlobalMessage({type: 'error', text: 'Ошибка. Попробуйте снова'})
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
 }
 
@@ -77,9 +73,52 @@ export const logout = () => async (dispatch: Dispatch<AppActions>, getState: () 
       deleteCookie('userData');
       dispatch(setUserData(null));
    } catch (error) {
-      setGlobalMessage({type: 'error', text: 'Ошибка. Попробуйте снова'})
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
 }
+
+export const updateProfile = (userName: string, userPhoto: any) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+   try {
+      const user = auth().currentUser;
+
+      let imgLink = ``;
+      let userData = null;
+
+      if (user) {
+         let uploadedFile = await storage.ref().child(`/users/${userPhoto.name}`).put(userPhoto);
+
+         await uploadedFile.ref.getDownloadURL().then(downloadURL => {
+            imgLink = downloadURL;
+         });
+         await user.updateProfile({
+            photoURL: imgLink,
+            displayName: userName
+         }).then(() => console.log(user));
+
+         await db.ref("posts").orderByChild("userId").startAt(user.uid).on("child_added", (snap) => {
+            db.ref(`posts/${snap.key}`).set({
+               ...snap.val(),
+               userPhoto: imgLink,
+               userName: userName
+            })
+         });
+
+         userData = {
+            name: user.displayName,
+            email: user.email,
+            photoUrl: user.photoURL,
+            uid: user.uid
+         }
+
+         setCookie('userData', JSON.stringify(userData), {expires: 2147483647});
+         dispatch(setUserData(userData));
+      }
+
+   } catch (error) {
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
+   }
+}
+
 
 
 export default authReducer;

@@ -61,7 +61,7 @@ export const LoginForm: React.FC<Props> = ({login, register}) => {
                autoFocus
                defaultValue=""
             />
-            <p>{errors.email?.message}</p>
+            <p className="form-error">{errors.email?.message}</p>
             <Controller
                as={TextField}
                name="password"
@@ -73,7 +73,7 @@ export const LoginForm: React.FC<Props> = ({login, register}) => {
                margin="normal"
                defaultValue=""
             />
-            <p>{errors.password?.message}</p>
+            <p className="form-error">{errors.password?.message}</p>
 
             <Button
                type="submit"

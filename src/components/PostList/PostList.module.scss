@@ -1,4 +1,5 @@
 .post {
+    margin-bottom: 35px;
     .img {
         display: flex;
         width: 100%;
@@ -16,5 +17,15 @@
     .caption {
         margin-top: 20px;
         text-transform: uppercase;
+    }
+    .postTop {
+        padding: 15px 0;
+        display: flex;
+        align-items: center;
+    }
+    .postUserName {
+        display: inline-block;
+        margin-left: 10px;
+        color: #000000;
     }
 }

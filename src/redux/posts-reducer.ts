@@ -4,7 +4,7 @@ import {AppState}                                                               
 import {IPostObject, IPostsInitialState, PostsActionTypes, SET_POSTS, SetPostsAction} from "../types/posts-types";
 import {CurrentUser}                                                                  from "../types/auth-types";
 import {auth, db, storage}                                                            from "../service/firebase";
-import {setGlobalMessage}                                                                   from "./app-reducer";
+import {setMessageData}                                                               from "./app-reducer";
 
 
 let initialState: IPostsInitialState = {
@@ -33,7 +33,7 @@ export const getPosts = () => async (dispatch: Dispatch<AppActions>, getState: (
       })
    } catch (error) {
 
-      setGlobalMessage({type: 'error', text: 'Ошибка. Попробуйте снова'})
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
 }
 
@@ -42,12 +42,14 @@ export const addPost = (user: CurrentUser, file: any, imgCaption: string) => asy
       let {uid, photoURL, displayName} = auth()?.currentUser || {};
       let imgLink = ``;
 
-      await storage
+      let uploadedFile = await storage
          .ref()
          .child(`/posts/${uid || ''}/${file.name}`)
-         .put(file).snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            imgLink = downloadURL;
-         })
+         .put(file);
+
+      await uploadedFile.ref.getDownloadURL().then(downloadURL => {
+         imgLink = downloadURL;
+      })
 
       await db.ref("posts").push({
          imgLink,
@@ -56,11 +58,8 @@ export const addPost = (user: CurrentUser, file: any, imgCaption: string) => asy
          userPhoto: photoURL,
          userName: displayName
       });
-
-
-      //dispatch(setPosts(posts.val()));
    } catch (error) {
-      setGlobalMessage({type: 'error', text: 'Ошибка. Попробуйте снова'})
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
 }
 
