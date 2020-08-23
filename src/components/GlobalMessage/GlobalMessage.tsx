@@ -7,7 +7,7 @@ function Alert(props: AlertProps) {
    return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const GlobalMessage = () => {
+export const GlobalMessage = () => {
    const message = useSelector((state: AppState) => state.app.message);
    return (
       <>
@@ -17,6 +17,4 @@ const GlobalMessage = () => {
       </>
    );
 }
-
-export default GlobalMessage
 

@@ -6,7 +6,7 @@ import {AppActions}         from "../../types/common_types";
 import {bindActionCreators} from "redux";
 import {connect}            from "react-redux";
 import {getPosts}           from '../../redux/posts-reducer';
-import {IPosts, IPostObject}             from "../../types/posts-types";
+import {IPostObject}        from "../../types/posts-types";
 import {PostListItem}       from "./PostListItem/PostListItem";
 
 
@@ -16,9 +16,7 @@ const PostList: React.FC<Props> = ({posts, getPosts}) => {
 
    useEffect(() => {
       getPosts()
-   },[])
-
-   console.log(posts)
+   },[getPosts])
 
    return (
       <div className="container">

@@ -23,14 +23,11 @@ const appReducer = (state = initialState, action: AppActionTypes) => {
 export const setMessageData = (message: IMessage | null): SetMessageAction => ({type: SET_MESSAGE, payload: message})
 
 
-export const setMessage = (message: IMessage) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
-
-   dispatch(setMessageData(message))
-
+export const setGlobalMessage = (message: IMessage | null) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+   dispatch(setMessageData(message));
    setTimeout(() => {
-      dispatch(setMessageData(null))
+      dispatch(setMessageData(null));
    }, 3000)
 }
-
 
 export default appReducer;

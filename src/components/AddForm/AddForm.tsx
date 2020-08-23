@@ -57,8 +57,6 @@ export const AddForm:React.FC<Props> = React.forwardRef(({setClose}) => {
          </label>
          {errors.imgLink && <span>This field is required</span>}
 
-
-
          <Button
             type="submit"
             fullWidth

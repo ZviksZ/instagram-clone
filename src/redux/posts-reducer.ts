@@ -1,11 +1,10 @@
-import {Dispatch}                                                                             from "redux";
+import {Dispatch}                                                                     from "redux";
 import {AppActions}                                                                   from "../types/common_types";
 import {AppState}                                                                     from "./store";
-import {IPostsInitialState, PostsActionTypes, SET_POSTS, SetPostsAction, IPostObject} from "../types/posts-types";
+import {IPostObject, IPostsInitialState, PostsActionTypes, SET_POSTS, SetPostsAction} from "../types/posts-types";
 import {CurrentUser}                                                                  from "../types/auth-types";
 import {auth, db, storage}                                                            from "../service/firebase";
-import {setMessage}                                                                   from "./app-reducer";
-
+import {setGlobalMessage}                                                                   from "./app-reducer";
 
 
 let initialState: IPostsInitialState = {
@@ -33,7 +32,8 @@ export const getPosts = () => async (dispatch: Dispatch<AppActions>, getState: (
          dispatch(setPosts(snapshot.val()));
       })
    } catch (error) {
-      setMessage({type: 'error', text: 'Error. Try again, please.'})
+
+      setGlobalMessage({type: 'error', text: 'Ошибка. Попробуйте снова'})
    }
 }
 
@@ -43,11 +43,11 @@ export const addPost = (user: CurrentUser, file: any, imgCaption: string) => asy
       let imgLink = ``;
 
       await storage
-      .ref()
-      .child(`/posts/${uid || ''}/${file.name}`)
-      .put(file).snapshot.ref.getDownloadURL().then(function(downloadURL) {
+         .ref()
+         .child(`/posts/${uid || ''}/${file.name}`)
+         .put(file).snapshot.ref.getDownloadURL().then(function (downloadURL) {
             imgLink = downloadURL;
-      })
+         })
 
       await db.ref("posts").push({
          imgLink,
@@ -60,8 +60,7 @@ export const addPost = (user: CurrentUser, file: any, imgCaption: string) => asy
 
       //dispatch(setPosts(posts.val()));
    } catch (error) {
-
-      setMessage({type: 'error', text: 'Error. Try again, please.'})
+      setGlobalMessage({type: 'error', text: 'Ошибка. Попробуйте снова'})
    }
 }
 

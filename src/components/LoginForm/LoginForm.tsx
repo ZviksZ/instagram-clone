@@ -14,7 +14,6 @@ import {AppActions}          from "../../types/common_types";
 import {ThunkDispatch}       from "redux-thunk";
 import {bindActionCreators}  from "redux";
 import {login, register}     from '../../redux/auth-reducer';
-import {db}                  from "../../service/firebase";
 
 type FormType = {
    email: string,
