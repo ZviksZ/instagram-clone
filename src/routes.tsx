@@ -4,7 +4,8 @@ import Navbar                    from "./components/Navbar/Navbar";
 import {AuthPage}                from "./components/pages/AuthPage/AuthPage";
 import {MainPage}                from "./components/pages/MainPage/MainPage";
 import {GlobalMessage}           from './components/GlobalMessage/GlobalMessage';
-import {ProfilePage}             from "./components/pages/ProfilePage/ProfilePage";
+import {SettingsPage}            from "./components/pages/SettingsPage/SettingsPage";
+import ProfilePage               from "./components/pages/ProfilePage/ProfilePage";
 
 export const useRoutes = (isAuth: boolean) => {
    if (isAuth) {
@@ -18,7 +19,10 @@ export const useRoutes = (isAuth: boolean) => {
                   <Route path="/" exact>
                      <MainPage/>
                   </Route>
-                  <Route path="/profile" exact>
+                  <Route path="/settings" exact>
+                     <SettingsPage/>
+                  </Route>
+                  <Route path="/profile/:userId" exact>
                      <ProfilePage/>
                   </Route>
                   <Route path="/"

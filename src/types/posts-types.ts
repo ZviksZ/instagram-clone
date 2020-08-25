@@ -1,7 +1,9 @@
 export const SET_POSTS = 'instagram-clone/posts/SET_POSTS';
+export const SET_PROFILE_POSTS = 'instagram-clone/posts/SET_PROFILE_POSTS';
 
 export interface IPostsInitialState {
    posts: IPostObject
+   profilePosts: IPostObject
 }
 
 export interface IPostObject {
@@ -28,5 +30,9 @@ export interface SetPostsAction {
    type: typeof SET_POSTS;
    payload: IPostObject;
 }
+export interface SetProfilePostsAction {
+   type: typeof SET_PROFILE_POSTS;
+   payload: IPostObject;
+}
 
-export type PostsActionTypes = SetPostsAction;
+export type PostsActionTypes = SetPostsAction | SetProfilePostsAction;

@@ -17,6 +17,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  &::-webkit-scrollbar { width: 0; }
+  & { -ms-overflow-style: none; }
+  & { overflow: -moz-scrollbars-none; }
 }
 
 code {
@@ -43,5 +46,4 @@ code {
 }
 .center-text {
   text-align: center;
-  margin: 25px 0;
 }

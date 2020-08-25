@@ -1,0 +1,28 @@
+.profilePosts {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 50px -1%;
+    .profilePostsItem {
+        width: 31.333%;
+        margin: 1%;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        background-position: center center;
+        transition: .2s;
+
+        &:before {
+            display: block;
+            float: left;
+            content: '';
+            padding-top: 100%;
+        }
+
+        @media screen and (min-width:1000px) {
+            &:hover {
+                opacity: .5;
+            }
+        }
+    }
+}
+

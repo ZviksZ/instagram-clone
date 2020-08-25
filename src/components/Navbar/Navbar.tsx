@@ -17,14 +17,9 @@ type Props = LinkStateProps & LinkDispatchProps;
 
 
 const Navbar: React.FC<Props> = ({logout, currentUser}) => {
-   const logoutHandler = (e: React.MouseEvent<HTMLLIElement>) => {
-      e.preventDefault();
-
-      logout()
-   }
-
    const [open, setOpen] = React.useState(false);
    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+   let photo = currentUser?.photoUrl || '';
 
    const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
       setAnchorEl(event.currentTarget);
@@ -44,8 +39,15 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
       setAnchorEl(null);
    };
 
+   const logoutHandler = (e: React.MouseEvent<HTMLLIElement>) => {
+      e.preventDefault();
 
-   let photo = currentUser?.photoUrl || '';
+      logout()
+   }
+
+   if(!currentUser) {
+      return <></>
+   }
 
    return (
       <div className={s.navbar}>
@@ -55,7 +57,7 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
                   <img src={logo} alt=""/>
                </NavLink>
 
-               <Avatar alt="" src={photo}  aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}/>
+               <Avatar className={s.avatar} alt="" src={photo}  aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}/>
 
                <Menu
                   id="simple-menu"
@@ -66,9 +68,12 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
                >
                   <MenuItem onClick={handleOpenModal}>Добавить пост</MenuItem>
                   <MenuItem onClick={handleClose}>
-                     <NavLink to={'/profile'} className={s.link}>Профиль</NavLink>
+                     <NavLink to={'/settings'} className={s.link}>Профиль</NavLink>
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>Мои фото</MenuItem>
+                  <MenuItem onClick={handleClose}>
+                     <NavLink to={`/profile/${currentUser.uid}`} className={s.link}>Мои фото</NavLink>
+
+                  </MenuItem>
                   <MenuItem onClick={logoutHandler}>Выход</MenuItem>
                </Menu>
 

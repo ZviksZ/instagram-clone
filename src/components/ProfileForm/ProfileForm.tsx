@@ -31,7 +31,7 @@ export const ProfileForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
             {user && user?.photoUrl && <Avatar className={s.formAvatar} alt="" src={user.photoUrl}  aria-controls="simple-menu" aria-haspopup="true"/>}
 
-         <h2>Изменить профиль {user && user?.name && user.name}</h2>
+         <h2 className="center-text">Изменить профиль {user && user?.name && user.name}</h2>
          <Controller
             as={TextField}
             name="userName"

@@ -95,12 +95,15 @@ export const updateProfile = (userName: string, userPhoto: any) => async (dispat
             displayName: userName
          }).then(() => console.log(user));
 
-         await db.ref("posts").orderByChild("userId").startAt(user.uid).on("child_added", (snap) => {
-            db.ref(`posts/${snap.key}`).set({
-               ...snap.val(),
-               userPhoto: imgLink,
-               userName: userName
-            })
+         await db.ref("posts").orderByChild("userId").startAt(user.uid).endAt(user.uid).on("child_added", (snap) => {
+            if(snap.val().userId === user.uid) {
+               db.ref(`posts/${snap.key}`).set({
+                  ...snap.val(),
+                  userPhoto: imgLink,
+                  userName: userName
+               })
+            }
+
          });
 
          userData = {
