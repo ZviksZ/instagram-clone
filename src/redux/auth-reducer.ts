@@ -85,13 +85,16 @@ export const updateProfile = (userName: string, userPhoto: any) => async (dispat
       let userData = null;
 
       if (user) {
-         let uploadedFile = await storage.ref().child(`/users/${userPhoto.name}`).put(userPhoto);
+         if(userPhoto) {
+            let uploadedFile = await storage.ref().child(`/users/${userPhoto.name}`).put(userPhoto);
 
-         await uploadedFile.ref.getDownloadURL().then(downloadURL => {
-            imgLink = downloadURL;
-         });
+            await uploadedFile.ref.getDownloadURL().then(downloadURL => {
+               imgLink = downloadURL;
+            });
+         }
+
          await user.updateProfile({
-            photoURL: imgLink,
+            photoURL: userPhoto ? imgLink : user.photoURL,
             displayName: userName
          }).then(() => console.log(user));
 
@@ -99,7 +102,7 @@ export const updateProfile = (userName: string, userPhoto: any) => async (dispat
             if(snap.val().userId === user.uid) {
                db.ref(`posts/${snap.key}`).set({
                   ...snap.val(),
-                  userPhoto: imgLink,
+                  userPhoto: userPhoto ? imgLink : user.photoURL,
                   userName: userName
                })
             }

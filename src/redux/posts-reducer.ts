@@ -1,15 +1,31 @@
-import {Dispatch}                                                                                                               from "redux";
-import {AppActions}                                                                                                             from "../types/common_types";
-import {AppState}                                                                                                               from "./store";
-import {IPostObject, IPostsInitialState, PostsActionTypes, SET_POSTS, SetPostsAction, SET_PROFILE_POSTS, SetProfilePostsAction} from "../types/posts-types";
-import {CurrentUser}                                                                                                            from "../types/auth-types";
-import {auth, db, storage}                                                                                                      from "../service/firebase";
-import {setMessageData}                                                                                                         from "./app-reducer";
+import {Dispatch}       from "redux";
+import {AppActions}     from "../types/common_types";
+import {AppState}       from "./store";
+import {
+   IPostObject,
+   IPosts,
+   IPostsInitialState,
+   PostsActionTypes, ProfileModal,
+   SET_POSTS,
+   SET_PROFILE_MODAL,
+   SET_PROFILE_POSTS,
+   SetPostsAction,
+   SetProfileModalAction,
+   SetProfilePostsAction
+} from "../types/posts-types";
+import {CurrentUser}    from "../types/auth-types";
+import {
+   auth,
+   db,
+   storage
+}                       from "../service/firebase";
+import {setMessageData} from "./app-reducer";
 
 
 let initialState: IPostsInitialState = {
    posts: {},
-   profilePosts: {}
+   profilePosts: {},
+   profileModalItem: null
 }
 
 const postsReducer = (state = initialState, action: PostsActionTypes) => {
@@ -24,6 +40,11 @@ const postsReducer = (state = initialState, action: PostsActionTypes) => {
             ...state,
             profilePosts: action.payload
          }
+      case SET_PROFILE_MODAL:
+         return {
+            ...state,
+            profileModalItem: action.payload
+         }
       default:
          return state;
    }
@@ -31,6 +52,7 @@ const postsReducer = (state = initialState, action: PostsActionTypes) => {
 
 export const setPosts = (posts: IPostObject): SetPostsAction => ({type: SET_POSTS, payload: posts})
 export const setProfilePosts = (posts: IPostObject): SetProfilePostsAction => ({type: SET_PROFILE_POSTS, payload: posts})
+export const setProfileModal = (object:  ProfileModal | null): SetProfileModalAction => ({type: SET_PROFILE_MODAL, payload: object})
 
 
 export const getPosts = () => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
@@ -81,5 +103,32 @@ export const addPost = (user: CurrentUser, file: any, imgCaption: string) => asy
       dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
 }
+
+export const deletePost = (postId: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+   try {
+      await db.ref(`posts/${postId}`).remove();
+   } catch (error) {
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
+   }
+}
+
+export const updatePost = (postId: string, caption: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+   try {
+      await db.ref(`posts/${postId}`).update({'imgCaption': caption});
+   } catch (error) {
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
+   }
+}
+
+
+export const setProfileModalItem = (itemObj: ProfileModal | null ) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+   try {
+      dispatch(setProfileModal(itemObj));
+   } catch (error) {
+      dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
+   }
+}
+
+
 
 export default postsReducer;

@@ -28,4 +28,14 @@
         margin-left: 10px;
         color: #000000;
     }
+    .captionUpdate {
+        display: flex;
+        align-items: center;
+        .captionUpdateIcon {
+            margin-left: 10px;
+        }
+    }
+    .controlsBtn {
+        margin-left: auto;
+    }
 }

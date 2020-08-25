@@ -1,9 +1,11 @@
 export const SET_POSTS = 'instagram-clone/posts/SET_POSTS';
 export const SET_PROFILE_POSTS = 'instagram-clone/posts/SET_PROFILE_POSTS';
+export const SET_PROFILE_MODAL = 'instagram-clone/posts/SET_PROFILE_MODAL';
 
 export interface IPostsInitialState {
    posts: IPostObject
    profilePosts: IPostObject
+   profileModalItem:  ProfileModal | null
 }
 
 export interface IPostObject {
@@ -34,5 +36,14 @@ export interface SetProfilePostsAction {
    type: typeof SET_PROFILE_POSTS;
    payload: IPostObject;
 }
+export interface SetProfileModalAction {
+   type: typeof SET_PROFILE_MODAL;
+   payload: ProfileModal | null
+}
+export type ProfileModal = {
+   post: IPosts
+   itemId: string
+}
 
-export type PostsActionTypes = SetPostsAction | SetProfilePostsAction;
+
+export type PostsActionTypes = SetPostsAction | SetProfilePostsAction | SetProfileModalAction;
