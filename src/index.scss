@@ -45,6 +45,7 @@ code {
   margin-top: 5px;
 }
 .center-text {
+  width: 100%;
   text-align: center;
 }
 .single-post {
@@ -52,4 +53,10 @@ code {
   background: #ffffff;
   width: 100%;
   max-width: 600px;
+}
+.mt50 {
+  margin-top: 50px;
+}
+.mb5 {
+  margin-bottom: 50px;
 }

@@ -32,7 +32,7 @@ export const ProfilePosts: React.FC<Props> = ({profilePosts, getProfilePosts, se
                               onClick={() => setProfileModalItem(profileObj)}
                               style={{backgroundImage:"url(" + profilePosts[key].imgLink + ")"}}></div>
                })
-               : <div className="center-text">Постов пока нет</div>
+               : <div className="center-text mt50">Постов пока нет</div>
          }
       </div>
    );

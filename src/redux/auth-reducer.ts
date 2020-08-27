@@ -61,6 +61,7 @@ export const register = (email: string, password: string) => async (dispatch: Di
 
    try {
       await auth().createUserWithEmailAndPassword(email, password);
+      dispatch(setMessageData({type: 'success', text: 'Пользователь создан. Теперь вы можете войти.'}))
    } catch (error) {
       dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }

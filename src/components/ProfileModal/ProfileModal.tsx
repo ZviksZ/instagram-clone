@@ -8,6 +8,7 @@ import s                          from './ProfileModal.module.scss'
 
 export const ProfileModal = () => {
    const profileItem = useSelector((state: AppState) => state.posts.profileModalItem);
+   const currentUser = useSelector((state: AppState) => state.auth.currentUser);
    const dispatch = useDispatch();
 
    const onClose = () => {
@@ -27,7 +28,7 @@ export const ProfileModal = () => {
             aria-describedby="simple-modal-description"
             className={s.photoModal}
          >
-            <PostListItem item={profileItem.post} itemId={profileItem.itemId} isSingle={true}/>
+            <PostListItem item={profileItem.post} currentUser={currentUser} itemId={profileItem.itemId} isSingle={true}/>
          </Modal>
       }
 

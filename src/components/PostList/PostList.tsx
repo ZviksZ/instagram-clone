@@ -8,11 +8,12 @@ import {connect}            from "react-redux";
 import {getPosts}           from '../../redux/posts-reducer';
 import {IPostObject}        from "../../types/posts-types";
 import {PostListItem}       from "./PostListItem/PostListItem";
+import {CurrentUser}        from "../../types/auth-types";
 
 
 type Props = LinkStateProps & LinkDispatchProps;
 
-const PostList: React.FC<Props> = ({posts, getPosts}) => {
+const PostList: React.FC<Props> = ({posts, getPosts, currentUser}) => {
 
    useEffect(() => {
       getPosts()
@@ -22,8 +23,8 @@ const PostList: React.FC<Props> = ({posts, getPosts}) => {
       <div className="container">
          {
             posts && Object.keys(posts).length
-               ? Object.keys(posts).map((key: any) => <PostListItem key={key} item={posts[key]} itemId={key}/>)
-               : <div className="center-text">Постов пока нет</div>
+               ? Object.keys(posts).map((key: any) => <PostListItem key={key} currentUser={currentUser} item={posts[key]} itemId={key}/>)
+               : <div className="center-text mt50">Постов пока нет</div>
          }
       </div>
    );
@@ -31,6 +32,7 @@ const PostList: React.FC<Props> = ({posts, getPosts}) => {
 
 interface LinkStateProps {
    posts: IPostObject
+   currentUser: CurrentUser
 }
 interface LinkDispatchProps {
    getPosts: typeof getPosts
@@ -38,7 +40,8 @@ interface LinkDispatchProps {
 
 let mapStateToProps = (state: AppState): LinkStateProps => {
    return {
-      posts: state.posts.posts
+      posts: state.posts.posts,
+      currentUser: state.auth.currentUser
    }
 }
 let mapDispatchToProps = (
