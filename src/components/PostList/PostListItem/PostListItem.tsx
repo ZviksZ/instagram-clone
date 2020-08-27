@@ -18,7 +18,7 @@ type Props = {
    isSingle?: boolean
 }
 
-export const PostListItem: React.FC<Props> = ({item, itemId, isSingle}) => {
+export const PostListItem: React.FC<Props> = React.forwardRef(({item, itemId, isSingle}) => {
    const [editMode, setEditMode] = React.useState<boolean>(false);
    const [caption, setCaption] = React.useState<any>(item.imgCaption);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -87,7 +87,6 @@ export const PostListItem: React.FC<Props> = ({item, itemId, isSingle}) => {
                      fullWidth
                      margin="normal"
                      autoFocus
-                     defaultValue={caption}
                   />
                <SendIcon onClick={sendCaption} className={s.captionUpdateIcon}/>
                <CloseIcon onClick={() => setEditMode(false)} className={s.captionUpdateIcon} />
@@ -97,5 +96,5 @@ export const PostListItem: React.FC<Props> = ({item, itemId, isSingle}) => {
 
       </div>
    );
-}
+});
 

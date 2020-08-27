@@ -21,7 +21,7 @@ const PostList: React.FC<Props> = ({posts, getPosts}) => {
    return (
       <div className="container">
          {
-            Object.keys(posts).length
+            posts && Object.keys(posts).length
                ? Object.keys(posts).map((key: any) => <PostListItem key={key} item={posts[key]} itemId={key}/>)
                : <div className="center-text">Постов пока нет</div>
          }

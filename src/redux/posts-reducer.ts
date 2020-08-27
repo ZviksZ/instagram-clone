@@ -107,6 +107,13 @@ export const addPost = (user: CurrentUser, file: any, imgCaption: string) => asy
 export const deletePost = (postId: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
    try {
       await db.ref(`posts/${postId}`).remove();
+
+      const state = getState();
+      const profileModalItem = state.posts.profileModalItem;
+
+      if (profileModalItem && profileModalItem.itemId === postId) {
+         dispatch(setProfileModal(null));
+      }
    } catch (error) {
       dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
@@ -115,6 +122,23 @@ export const deletePost = (postId: string) => async (dispatch: Dispatch<AppActio
 export const updatePost = (postId: string, caption: string) => async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
    try {
       await db.ref(`posts/${postId}`).update({'imgCaption': caption});
+
+      const state = getState();
+      const profileModalItem = state.posts.profileModalItem;
+
+      if (profileModalItem && profileModalItem.itemId === postId) {
+         let updateItem = {
+            ...profileModalItem,
+            post: {
+               ...profileModalItem.post,
+               imgCaption: caption
+            }
+         }
+         dispatch(setProfileModal(updateItem));
+      }
+
+      //Добавить обновление текущего фото
+
    } catch (error) {
       dispatch(setMessageData({type: 'error', text: 'Ошибка. Попробуйте снова'}))
    }
