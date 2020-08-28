@@ -85,7 +85,9 @@ const Navbar: React.FC<Props> = ({logout, currentUser}) => {
                   aria-describedby="simple-modal-description"
                   className={s.addPhotoModal}
                >
-                  <AddForm setClose={handleCloseModal}/>
+                  <div className="photoWrapper">
+                     <AddForm setClose={handleCloseModal}/>
+                  </div>
                </Modal>
             </div>
 

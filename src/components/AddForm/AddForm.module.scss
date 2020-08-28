@@ -1,6 +1,6 @@
 .form {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     min-width: 320px;
     background: #fff;
     padding: 25px;
@@ -9,6 +9,10 @@
     }
     .fileButton {
         display: block;
-        margin-bottom: 5px;
+        width: 100%;
+        margin: 10px 0 15px;
+        & > span {
+            width: 100%;
+        }
     }
 }

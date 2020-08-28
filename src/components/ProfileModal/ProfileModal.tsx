@@ -28,10 +28,11 @@ export const ProfileModal = () => {
             aria-describedby="simple-modal-description"
             className={s.photoModal}
          >
-            <PostListItem item={profileItem.post} currentUser={currentUser} itemId={profileItem.itemId} isSingle={true}/>
+            <div className="photoWrapper">
+               <PostListItem item={profileItem.post} currentUser={currentUser} itemId={profileItem.itemId} isSingle={true}/>
+            </div>
          </Modal>
       }
-
    </>
 
 

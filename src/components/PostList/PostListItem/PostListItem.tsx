@@ -20,7 +20,7 @@ type Props = {
    currentUser: CurrentUser
 }
 
-export const PostListItem: React.FC<Props> = React.forwardRef(({item, itemId, isSingle, currentUser}) => {
+export const PostListItem: React.FC<Props> = ({item, itemId, isSingle, currentUser}) => {
    const [editMode, setEditMode] = React.useState<boolean>(false);
    const [caption, setCaption] = React.useState<any>(item.imgCaption);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -104,5 +104,5 @@ export const PostListItem: React.FC<Props> = React.forwardRef(({item, itemId, is
 
       </div>
    );
-});
+};
 

@@ -11,7 +11,7 @@ type Props = {
    setClose: () => void
 }
 
-export const AddForm:React.FC<Props> = React.forwardRef(({setClose}) => {
+export const AddForm:React.FC<Props> = ({setClose}) => {
    const user = useSelector((state: AppState) => state.auth.currentUser);
    const dispatch = useDispatch();
 
@@ -76,5 +76,5 @@ export const AddForm:React.FC<Props> = React.forwardRef(({setClose}) => {
          </Button>
       </form>
    );
-})
+};
 
