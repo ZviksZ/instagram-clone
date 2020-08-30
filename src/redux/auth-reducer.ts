@@ -96,7 +96,7 @@ export const updateProfile = (userName: string, userPhoto: any) => async (dispat
 
          await user.updateProfile({
             photoURL: userPhoto ? imgLink : user.photoURL,
-            displayName: userName
+            displayName: userName ? userName : user.displayName
          }).then(() => console.log(user));
 
          await db.ref("posts").orderByChild("userId").startAt(user.uid).endAt(user.uid).on("child_added", (snap) => {

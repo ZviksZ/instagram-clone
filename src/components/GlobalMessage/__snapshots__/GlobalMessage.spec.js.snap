@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GlobalMessage component should render GlobalMessage 1`] = `
+<Fragment>
+  <Alert
+    severity="error"
+  >
+    Ошибка. Попробуйте снова
+  </Alert>
+</Fragment>
+`;

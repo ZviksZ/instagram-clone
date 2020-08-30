@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loader component should render Loader 1`] = `
+<div
+  className="center-text mt50"
+>
+  <WithStyles(ForwardRef(CircularProgress)) />
+</div>
+`;
