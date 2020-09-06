@@ -47,7 +47,6 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
             name: currentUser.displayName,
             email: currentUser.email,
             photoUrl: currentUser.photoURL,
-
             uid: currentUser.uid
          }
       }
