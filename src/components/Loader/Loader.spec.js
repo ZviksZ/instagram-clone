@@ -1,6 +1,7 @@
 import React from "react";
 import {Loader} from './Loader';
 
+// eslint-disable-next-line
 const setUp = () => shallow(<Loader />);
 
 describe("Loader component", () => {
