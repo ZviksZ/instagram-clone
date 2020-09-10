@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React           from "react";
 import {SET_USER_DATA} from "../../types/auth-types";
 import authReducer     from "../auth-reducer";

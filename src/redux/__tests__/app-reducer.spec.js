@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React         from "react";
 import {SET_MESSAGE} from "../../types/app-types";
 import appReducer    from "../app-reducer";

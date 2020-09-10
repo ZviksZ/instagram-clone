@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React                                             from "react";
 import {SET_POSTS, SET_PROFILE_MODAL, SET_PROFILE_POSTS} from "../../types/posts-types";
 import postsReducer                                      from "../posts-reducer";
